@@ -33,7 +33,6 @@ const Nav = () => {
 								alt={user.displayName}
 								className="w-12 aspect-square rounded-full"
 							/>
-							<h3 className="text-sm font-medium">{user.displayName}</h3>
 						</Link>
 					</div>
 				)}
