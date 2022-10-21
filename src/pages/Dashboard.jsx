@@ -48,7 +48,7 @@ const Dashboard = () => {
 
 	return (
 		<div>
-			<h1 className="text-center font-medium text-lg">
+			<h1 className="font-medium text-lg">
 				{user && user.displayName} Dashboard
 			</h1>
 			{posts.length > 0 ? (
