@@ -2,7 +2,7 @@ import React from 'react';
 
 const Message = ({ children, name, avatar, description, timestamp }) => {
 	return (
-		<div className="p-4 shadow-xl mt-10 rounded-lg">
+		<div className="p-4 shadow-xl mt-10 rounded-lg flex flex-col">
 			<div className="flex items-center gap-2">
 				<img
 					src={avatar}
@@ -14,6 +14,7 @@ const Message = ({ children, name, avatar, description, timestamp }) => {
 			<div className="mt-5">
 				<p>{description}</p>
 			</div>
+			<small className="italic font-semibold self-end mt-2">{timestamp}</small>
 			{children}
 		</div>
 	);
