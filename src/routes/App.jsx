@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import Nav from '../components/Nav';
 import Dashboard from '../pages/Dashboard';
 import Home from '../pages/Home';
@@ -16,6 +17,7 @@ function App() {
 					<Route path="/dashboard" element={<Dashboard />} />
 					<Route path="/post" element={<Post />} />
 				</Routes>
+				<ToastContainer limit={1} />
 			</main>
 		</BrowserRouter>
 	);

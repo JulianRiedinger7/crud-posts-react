@@ -4,6 +4,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { db } from '../firebase/credentials';
 import { auth } from '../firebase/credentials';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Post = () => {
 	const [formData, setFormData] = useState({
@@ -24,7 +26,7 @@ const Post = () => {
 	const checkUser = () => {
 		if (loading) return;
 		if (!user) navigate('/login');
-		if (location.state.post.id)
+		if (location.state)
 			setFormData((prevFormData) => ({
 				...prevFormData,
 				description: location.state.post.description,
@@ -38,9 +40,14 @@ const Post = () => {
 	const addPost = async (evt) => {
 		evt.preventDefault();
 		const date = Date.now();
-		if (formData.description === '' || formData.description.length > 300)
-			return;
-		if (location.state.post.id) {
+		if (formData.description === '' || formData.description.length > 300) {
+			return toast.error('Mensaje no valido', {
+				position: 'top-center',
+				autoClose: 1500,
+			});
+		}
+
+		if (location.state) {
 			const docRef = doc(db, 'posts', location.state.post.id);
 			const updatedPost = {
 				...location.state.post,
@@ -54,6 +61,10 @@ const Post = () => {
 				}).format(date),
 			};
 			await updateDoc(docRef, updatedPost);
+			toast.success('Se ha editado el posteo!', {
+				position: 'top-center',
+				autoClose: 1500,
+			});
 			return navigate('/');
 		} else {
 			const postsRef = collection(db, 'posts');
@@ -70,9 +81,12 @@ const Post = () => {
 				name: user.displayName,
 				avatar: user.photoURL,
 			});
-
+			toast.success('El posteo ha sido creado!', {
+				position: 'top-center',
+				autoClose: 1500,
+			});
 			setFormData({ description: '' });
-			navigate('/');
+			return navigate('/');
 		}
 	};
 
@@ -82,7 +96,7 @@ const Post = () => {
 			onSubmit={addPost}
 		>
 			<h1 className="text-xl font-medium">
-				{location.state.post.id ? 'Edita tu post' : 'Crea un nuevo Post!'}
+				{location.state ? 'Edita tu post' : 'Crea un nuevo Post!'}
 			</h1>
 			<label htmlFor="description">Descripcion:</label>
 			<textarea
@@ -100,7 +114,7 @@ const Post = () => {
 				type="submit"
 				className="bg-cyan-500 text-white font-medium text-lg rounded-lg py-2"
 			>
-				{location.state.post.id ? 'Editar' : 'Postear'}
+				{location.state ? 'Editar' : 'Postear'}
 			</button>
 		</form>
 	);
